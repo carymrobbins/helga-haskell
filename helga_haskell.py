@@ -9,7 +9,7 @@ def clean_output(f):
         try:
             result = f(*args, **kwargs)
         except TryHaskell.Error as e:
-            return 'Uh oh: ' + e.message
+            result = 'Uh oh: ' + e.message
         # Truncate output and replace newlines to send only one message.
         return result.replace('\n', ' ')[:300] if result else result
     return wrapper
