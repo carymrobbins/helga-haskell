@@ -21,7 +21,11 @@ def show_type(result):
 
 def show_value(result):
     if not result.ok:
-        return 'ERROR: ' + result.value
+        # Reduce multiple white spaces with a single space.
+        msg = ' '.join(result.value.split())
+        return 'ERROR: ' + msg
+    if result.stdout:
+        return ' '.join(result.stdout)
     if result.value:
         return result.value
     return show_type(result)

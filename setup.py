@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='helga-haskell',
-    version='0.1.1',
+    version='0.1.2',
     author="Cary M. Robbins",
     description='Evaluate Haskell expressions using helga!',
     author_email="carymrobbins@gmail.com",
