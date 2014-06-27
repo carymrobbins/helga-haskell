@@ -8,7 +8,7 @@ setup(
     author_email="carymrobbins@gmail.com",
     url="https://github.com/carymrobbins/helga-haskell",
     packages=find_packages(),
-    license=open('LICENSE').read(),
+    license='BSD3',
     include_package_data=True,
     zip_safe=True,
     install_requires=[
