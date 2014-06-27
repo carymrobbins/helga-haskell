@@ -31,9 +31,7 @@ def show_value(result):
 @clean_output
 def haskell(client, channel, nick, message, matches):
     # Simplify checking matches.
-    print matches
     matches = ''.join(matches)
-    print matches
     if ':t' in matches:
         _, exp = message.split(':t', 1)
         r = TryHaskell.get(exp)

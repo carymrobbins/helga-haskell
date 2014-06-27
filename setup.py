@@ -8,11 +8,11 @@ setup(
     author_email="carymrobbins@gmail.com",
     url="https://github.com/carymrobbins/helga-haskell",
     packages=find_packages(),
+    py_modules=['helga_haskell'],
     license='BSD3',
     include_package_data=True,
     zip_safe=True,
     install_requires=[
-        'helga',
         'tryhaskell',
     ],
     entry_points=dict(
