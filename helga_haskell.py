@@ -32,15 +32,14 @@ def show_value(result):
 
 
 @command('haskell', aliases=['h'],
-         help='Run haskell expressions. Usage: helga h(askell) (:t|> :t|>) <expression>')
+         help='Run haskell expressions. Usage: helga h(askell) (>|:t) <expression>')
 @clean_output
 def haskell(client, channel, nick, message, cmd, args):
-    # Simplify checking matches.
-    argstr = ' '.join(args)
-
-    if ':t' in argstr:
+    if ':t' in args[:1]:
         _, exp = message.split(':t', 1)
         r = TryHaskell.get(exp)
         return show_type(r) if r.ok else show_value(r)
-    elif '>' in argstr:
-        return show_value(TryHaskell.get(argstr[1:]))
+    elif '>' in args[:1]:
+        _, exp = message.split('>', 1)
+        return show_value(TryHaskell.get(exp))
+    return show_value(TryHaskell.get(' '.join(args)))
