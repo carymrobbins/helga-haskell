@@ -1,6 +1,6 @@
 from functools import wraps
 from tryhaskell import TryHaskell
-from helga.plugins import match
+from helga.plugins import command
 
 
 def clean_output(f):
@@ -31,14 +31,15 @@ def show_value(result):
     return show_type(result)
 
 
-@match(r'^(\:t |>\s*\:t |>).*$')
+@command('haskell', aliases=['h'],
+         help='Run haskell expressions. Usage: helga h(askell) (>|:t) <expression>')
 @clean_output
-def haskell(client, channel, nick, message, matches):
-    # Simplify checking matches.
-    matches = ''.join(matches)
-    if ':t' in matches:
+def haskell(client, channel, nick, message, cmd, args):
+    if ':t' in args[:1]:
         _, exp = message.split(':t', 1)
         r = TryHaskell.get(exp)
         return show_type(r) if r.ok else show_value(r)
-    elif '>' in matches:
-        return show_value(TryHaskell.get(message[1:]))
+    elif '>' in args[:1]:
+        _, exp = message.split('>', 1)
+        return show_value(TryHaskell.get(exp))
+    return show_value(TryHaskell.get(' '.join(args)))
