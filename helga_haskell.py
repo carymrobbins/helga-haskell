@@ -19,8 +19,10 @@ def show_type(result):
     return ' :: '.join([result.expr.strip(), result.type])
 
 
-def show_value(result):
+def show_value(result, display_errors):
     if not result.ok:
+        if not display_errors:
+            return None
         # Reduce multiple white spaces with a single space.
         msg = ' '.join(result.value.split())
         return 'ERROR: ' + msg
@@ -32,14 +34,13 @@ def show_value(result):
 
 
 @command('haskell', aliases=['h'],
-         help='Run haskell expressions. Usage: helga h(askell) (>|:t) <expression>')
+         help='Run haskell expressions. Usage: helga h(askell) (:t) <expression>')
 @clean_output
 def haskell(client, channel, nick, message, cmd, args):
+    # Only show errors when using the explicit !haskell command.
+    display_errors = cmd == 'haskell'
     if ':t' in args[:1]:
         _, exp = message.split(':t', 1)
         r = TryHaskell.get(exp)
-        return show_type(r) if r.ok else show_value(r)
-    elif '>' in args[:1]:
-        _, exp = message.split('>', 1)
-        return show_value(TryHaskell.get(exp))
-    return show_value(TryHaskell.get(' '.join(args)))
+        return show_type(r) if r.ok else show_value(r, display_errors)
+    return show_value(TryHaskell.get(' '.join(args)), display_errors)
